@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="login-box">
+        <h1>Login</h1>
+        <form>
+          <div class="input-box">
+            <input type="text" name="username" id="username" placeholder="Username" required />
+          </div>
+          <div class="input-box">
+            <input type="password" name="password" id="password" placeholder="Password" required />
+          </div>
+          <button type="submit" class="button" id="login-button">Login</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    const form = document.querySelector('form');
+      const usernameInput = document.querySelector('#username');
+      const passwordInput = document.querySelector('#password');
+      const loginButton = document.querySelector('#login-button');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        fetch('/user_login', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: usernameInput.value,
+            password: passwordInput.value,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+         .then((res) => res.json())
+         .then((data) => {
+            console.log(data);
+            if (data.error) {
+              alert(data.error);
+            } else {
+              alert('Login successful!');
+            }
+          })
+         .catch((error) => {
+            console.error(error);
+            alert('Error occurred while logging in');
+          });
+      });
+  </script>
+</html>
